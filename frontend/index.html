@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>5I-SY7</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<nav class="navbar navbar-light bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand text-white" href="#">
+            <img src="./mokoko.png" alt="" width="32" height="33" class="d-inline-block align-text-top">
+            5I-SY7
+        </a>
+    </div>
+</nav>
+
+<div class="container mt-3">
+    <div class="row">
+        <div class="col-lg-6 mt-1">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Objects in silo</h5>
+                    <div id="silo-object-container" class="list-group"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 mt-1">
+            <div id="object-info" class="card card-img h-100">
+                <img src="" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title"></h5>
+                    <p class="card-text"></p>
+                    <div class="btn-group-vertical">
+                        <a href="#" class="btn btn-primary">See</a>
+                        <a href="#" id="update-button" class="btn btn-warning" data-bs-toggle="modal"
+                           data-bs-target="#editModal">Update</a>
+                        <a href="#" id="reset-button" class="btn btn-danger">Reset</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-2 mb-2">
+        <div class="ratio ratio-16x9">
+            <iframe id="viewer" src="https://viewer.arskan.com/objects/share/6229d1e1cd78795d5ce9e445"
+                    allowfullscreen></iframe>
+        </div>
+    </div>
+    <div class="row mb-2">
+        <div class="col-lg-8 offset-lg-2 mt-1">
+            <h3 class="text-center">Pointers list</h3>
+            <div class="list-group" id="pointers-container"></div>
+            <div class="d-grid gap-2">
+                <button class="btn btn-primary" type="button" data-bs-toggle="modal"
+                        data-bs-target="#pointerModalCreate">
+                    Add Pointer
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit object modal -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Update object</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="edit-object">
+                    <div class="mb-3">
+                        <label for="name-edit" class="col-form-label">Name :</label>
+                        <input type="text" class="form-control" id="name-edit">
+                    </div>
+                    <div class="mb-3">
+                        <label for="desc-edit" class="col-form-label">Description :</label>
+                        <input type="text" class="form-control" id="desc-edit">
+                    </div>
+                    <input type="hidden" class="form-control" id="id-edit">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="edit-button-form" data-bs-dismiss="modal">
+                    Edit
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Show/Edit pointer modal -->
+<div class="modal fade" id="pointerModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Pointer</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="edit-pointer">
+                    <div class="mb-3">
+                        <label for="name-pointer" class="col-form-label">Title :</label>
+                        <input type="text" class="form-control" id="name-pointer" maxlength="24">
+                    </div>
+                    <div class="mb-3">
+                        <label for="desc-pointer" class="col-form-label">Description :</label>
+                        <input type="text" class="form-control" id="desc-pointer">
+                    </div>
+                    <div class="input-group mb-2">
+                        <span class="input-group-text">Position (x-y-z)</span>
+                        <input type="text" id="pos-x-pointer" class="form-control">
+                        <input type="text" id="pos-y-pointer" class="form-control">
+                        <input type="text" id="pos-z-pointer" class="form-control">
+                    </div>
+                    <div class="input-group mb-2">
+                        <span class="input-group-text">Camera position (x-y-z)</span>
+                        <input type="text" id="pos-cam-x-pointer" class="form-control">
+                        <input type="text" id="pos-cam-y-pointer" class="form-control">
+                        <input type="text" id="pos-cam-z-pointer" class="form-control">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-text">Camera target (x-y-z)</span>
+                        <input type="text" id="pos-target-x-pointer" class="form-control">
+                        <input type="text" id="pos-target-y-pointer" class="form-control">
+                        <input type="text" id="pos-target-z-pointer" class="form-control">
+                    </div>
+                    <input type="hidden" class="form-control" id="id-pointer">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger" id="pointer-delete-form" data-bs-dismiss="modal">
+                    Delete
+                </button>
+                <button type="button" class="btn btn-warning" id="pointer-button-form" data-bs-dismiss="modal">Edit
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Create pointer modal -->
+<div class="modal fade" id="pointerModalCreate" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add pointer</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="create-pointer">
+                    <div class="mb-3">
+                        <label for="create-name-pointer" class="col-form-label">Title :</label>
+                        <input type="text" class="form-control" id="create-name-pointer" maxlength="24">
+                    </div>
+                    <div class="mb-3">
+                        <label for="create-desc-pointer" class="col-form-label">Description :</label>
+                        <input type="text" class="form-control" id="create-desc-pointer">
+                    </div>
+                    <div class="input-group mb-2">
+                        <span class="input-group-text">Position (x-y-z)</span>
+                        <input type="text" id="create-pos-x-pointer" class="form-control">
+                        <input type="text" id="create-pos-y-pointer" class="form-control">
+                        <input type="text" id="create-pos-z-pointer" class="form-control">
+                    </div>
+                    <div class="input-group mb-2">
+                        <span class="input-group-text">Camera position (x-y-z)</span>
+                        <input type="text" id="create-pos-cam-x-pointer" class="form-control">
+                        <input type="text" id="create-pos-cam-y-pointer" class="form-control">
+                        <input type="text" id="create-pos-cam-z-pointer" class="form-control">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-text">Camera target (x-y-z)</span>
+                        <input type="text" id="create-pos-target-x-pointer" class="form-control">
+                        <input type="text" id="create-pos-target-y-pointer" class="form-control">
+                        <input type="text" id="create-pos-target-z-pointer" class="form-control">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="create-pointer-button-form" data-bs-dismiss="modal">
+                    Add
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Toast -->
+<div class="position-fixed bottom-0 start-50 translate-middle-x p-3" style="z-index: 99">
+    <div id="toast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <svg class="bd-placeholder-img rounded me-2" width="20" height="20" xmlns="http://www.w3.org/2000/svg"
+                 preserveAspectRatio="xMidYMid slice" focusable="false">
+                <rect width="100%" height="100%" fill="#007aff"></rect>
+            </svg>
+            <strong class="me-auto">Notification</strong>
+            <small>just now</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            Updated
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="script.js"></script>
+
+</body>
+</html>
